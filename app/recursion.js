@@ -16,8 +16,27 @@ recursionAnswers = {
    * 
    * @returns {Number[]} The files under the directory dirName, including subdiretories.
    */
-  listFiles: function listFiles(data, dirName) {
 
+  listFiles: function listFiles(data, dirName) {
+    let files = [];
+    if (dirName !== undefined) {
+      if (data.dirName === dirName) {
+        files = data.files;
+        data.subDirs.forEach((subDir) => {
+          files = files.concat(listFiles(subDir, undefined));
+        });
+      } else {
+        data.subDirs.forEach((subDir) => {
+          files = files.concat(listFiles(subDir, dirName));
+        });
+      }
+    } else {
+      files = data.files;
+      data.subDirs.forEach((subDir) => {
+        files = files.concat(listFiles(subDir, dirName));
+      });
+    }
+    return files;
   },
 
   /**
@@ -30,6 +49,14 @@ recursionAnswers = {
    * @returns {Number} The nth fibonacci number
    */
   fibonacci: function fibonacci(n) {
-
+    const arr = [];
+    arr.push(1);
+    arr.push(1);
+    let i = 2;
+    while (i <= n) {
+      arr.push(arr[i - 2] + arr[i - 1]);
+      i += 1;
+    }
+    return arr[n - 1];
   },
 };
